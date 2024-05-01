@@ -1,0 +1,8 @@
+#presets {
+    display: flex;
+    justify-content: row;
+}
+
+#presets h3 {
+    margin-right: 10px;
+}
