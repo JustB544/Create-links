@@ -1,6 +1,8 @@
 #presets {
     display: flex;
     justify-content: row;
+    cursor: default;
+    margin: 10px
 }
 
 #presets h3 {

@@ -1,0 +1,7 @@
+.setting-item {
+    margin: 3px 5px;
+    text-align: center;
+    overflow-x: auto;
+    max-width: 150px;
+    user-select: none;
+}

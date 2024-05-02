@@ -1,3 +1,8 @@
 .App {
-  margin-left: 30vw;
+  margin-top: 10vh;
+  cursor: default;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
 }
