@@ -1,9 +1,9 @@
 import React from "react";
 import { useLocalStorage } from "./hooks";
 
-function GenerateLinks(){
+function GenerateLinks({...props}){
     return (
-        <button>Generate</button>
+        <button {...props}>Generate</button>
     );
 }
 

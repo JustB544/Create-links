@@ -4,7 +4,7 @@ import Setting from "./Setting";
 import CurrentSettingsContext from "./CurrentSettingsContext";
 import "./Settings.css";
 
-function Settings(){
+function Settings({...props}){
     const {curSettings, setCurSettings} = useContext(CurrentSettingsContext);
     const [hidden, setHidden] = useState(true);
     let usedSettings;
@@ -17,7 +17,7 @@ function Settings(){
         usedSettings.classList.toggle("hidden");
     }
     return (
-        <div className="Settings">
+        <div className="Settings" {...props}>
             <div className="Settings_header">
                 <h3>Set Settings</h3>
                 <span onClick={toggleSettingsList}>{(hidden) ? "+" : "-"}</span>

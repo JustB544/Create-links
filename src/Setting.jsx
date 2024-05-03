@@ -2,7 +2,7 @@ import React, {useContext, useState} from "react";
 import CurrentSettingsContext from "./CurrentSettingsContext";
 import "./Setting.css";
 
-function Setting({name, setting, mode}){
+function Setting({name, setting, mode, ...props}){
     const {settings, setSettings, curSettings, setCurSettings} = useContext(CurrentSettingsContext);
     const [_mode, setMode] = useState(mode);
     const [value, setValue] = useState("");
@@ -63,7 +63,7 @@ function Setting({name, setting, mode}){
     }
 
     return (
-        <div className="row" style={{width: "100%"}}>
+        <div className="row" style={{width: "100%"}} {...props}>
             {(_mode === "change") ?
             <>
                 <button className="setting-item" onClick={() => {setMode("add")}}>{name}</button>

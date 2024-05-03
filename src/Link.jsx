@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import './Link.css';
 
-function Link(){
+function Link({...props}){
     const [value, setValue] = useState("");
     const [rows, setRows] = useState(2);
 
@@ -16,7 +16,7 @@ function Link(){
     }
 
     return (
-        <textarea cols={20} onChange={(e) => {setTextAreaInput(e)}} className="Link" placeholder="Base link" value={value}/>
+        <textarea cols={20} onChange={(e) => {setTextAreaInput(e)}} className="Link" placeholder="Base link" value={value} {...props}/>
     );
 }
 

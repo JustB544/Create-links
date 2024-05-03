@@ -1,9 +1,9 @@
 import React from "react";
 import { useLocalStorage } from "./hooks";
 
-function Preset({name, preset}){
+function Preset({name, preset, ...props}){
     return (
-        <button className="preset">{name}</button>
+        <button className="preset" {...props}>{name}</button>
     );
 }
 
