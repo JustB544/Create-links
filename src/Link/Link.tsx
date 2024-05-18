@@ -2,12 +2,12 @@ import React, {useState, useEffect} from "react";
 import './Link.css';
 
 function Link({...props}){
-    const [value, setValue] = useState("");
-    const [rows, setRows] = useState(2);
+    const [value, setValue] = useState<string>("");
+    const [rows, setRows] = useState<number>(2);
 
-    function setTextAreaInput(e) {
-        const val = e.target.value;
-        const target = e.target;
+    function setTextAreaInput(e : any) {
+        const val : string = e.target.value;
+        const target : HTMLElement = e.target;
         setValue(val);
 
         target.style.height = target.style.minHeight = 'auto';

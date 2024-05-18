@@ -1,6 +1,7 @@
 import React from "react";
-import { useLocalStorage } from "./hooks";
-import Preset from "./Preset";
+import { useLocalStorage } from "../helpers/hooks";
+import { obj } from "../helpers/interfaces";
+import Preset from "../Preset/Preset";
 import './Presets.css';
 
 function Presets({...props}){
@@ -8,7 +9,7 @@ function Presets({...props}){
     return (
         <div id="presets" {...props}>
             <h3>Presets</h3>
-            {Object.keys(presets).map(p => <Preset name={p} preset={presets[p]}/>)}
+            {Object.keys(presets).map((p) => <Preset name={p} preset={presets[p]}/>)}
         </div>
     );
 }

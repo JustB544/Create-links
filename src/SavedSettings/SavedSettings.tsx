@@ -1,11 +1,12 @@
 import React, {useContext, useEffect, useState} from "react";
-import Setting from "./Setting";
-import CurrentSettingsContext from "./CurrentSettingsContext";
-import "./Settings.css";
+import Setting from "../Setting/Setting";
+import CurrentSettingsContext from "../Context/CurrentSettingsContext";
+import { obj } from "../helpers/interfaces";
+import "../Settings/Settings.css";
 
 function SavedSettings({...props}){
-    const {settings, setSettings} = useContext(CurrentSettingsContext);
-    let settingsList;
+    const {settings, setSettings} = useContext<obj>(CurrentSettingsContext);
+    let settingsList : any;
     const [hidden, setHidden] = useState(true);
     useEffect(() => {
         settingsList = document.querySelector("#saved-settings");
@@ -23,7 +24,7 @@ function SavedSettings({...props}){
             </div>
             <div id="saved-settings" className="settings-list hidden">
                 {Object.keys(settings).map(s => <Setting key={s} name={s} setting={settings[s]} mode="list"/>)}
-                <Setting mode="add"/>
+                {/* <Setting mode="add"/> */}
             </div>
         </div>
         

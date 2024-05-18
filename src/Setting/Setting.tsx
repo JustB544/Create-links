@@ -1,9 +1,18 @@
 import React, {useContext, useState} from "react";
-import CurrentSettingsContext from "./CurrentSettingsContext";
+import CurrentSettingsContext from "../Context/CurrentSettingsContext";
+import { obj } from "../helpers/interfaces";
 import "./Setting.css";
 
-function Setting({name, setting, mode, ...props}){
-    const {settings, setSettings, curSettings, setCurSettings} = useContext(CurrentSettingsContext);
+interface SettingProps {
+    name: string;
+    setting: any;
+    mode: string;
+    [propName: string]: any;
+
+}
+
+function Setting({name, setting, mode, ...props} : SettingProps){
+    const {settings, setSettings, curSettings, setCurSettings} = useContext<obj>(CurrentSettingsContext);
     const [_mode, setMode] = useState(mode);
     const [value, setValue] = useState("");
 
@@ -18,30 +27,30 @@ function Setting({name, setting, mode, ...props}){
     }
 
     function changeSetting(){
-        setSettings((s) => {
+        setSettings((s : obj) => {
             let _s = {...s};
             delete _s[name]
             _s[value] = s[name];
             return _s;
         });
-        setCurSettings((s) => {
-            let _s = {...s};
-            delete _s[name]
-            _s[value] = s[name];
-            return _s;
-        });
+        // setCurSettings((s) => {
+        //     let _s = {...s};
+        //     delete _s[name]
+        //     _s[value] = s[name];
+        //     return _s;
+        // });
         setMode("list");
     }
 
     function deleteCurSetting(){
-        setCurSettings((s) => {
+        setCurSettings((s : obj) => {
             let _s = {...s};
             delete _s[name]
             return _s;
         });
     }
 
-    function changeValue(e){
+    function changeValue(e : any){
         setValue(e.target.value);
     }
 
@@ -50,12 +59,12 @@ function Setting({name, setting, mode, ...props}){
     }
 
     function deleteSetting(){
-        setSettings((s) => {
+        setSettings((s : obj) => {
             let _s = {...s};
             delete _s[name]
             return _s;
         });
-        setCurSettings((s) => {
+        setCurSettings((s : obj) => {
             let _s = {...s};
             delete _s[name]
             return _s;

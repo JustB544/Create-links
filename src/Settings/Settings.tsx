@@ -1,13 +1,14 @@
 import React, {useContext, useEffect, useState} from "react";
-import { useLocalStorage } from "./hooks";
-import Setting from "./Setting";
-import CurrentSettingsContext from "./CurrentSettingsContext";
+import { useLocalStorage } from "../helpers/hooks";
+import Setting from "../Setting/Setting";
+import CurrentSettingsContext from "../Context/CurrentSettingsContext";
+import { obj } from "../helpers/interfaces";
 import "./Settings.css";
 
 function Settings({...props}){
-    const {curSettings, setCurSettings} = useContext(CurrentSettingsContext);
+    const {curSettings, setCurSettings} = useContext<obj>(CurrentSettingsContext);
     const [hidden, setHidden] = useState(true);
-    let usedSettings;
+    let usedSettings : any;
     useEffect(() => {
         usedSettings = document.querySelector("#used-settings");
     });
