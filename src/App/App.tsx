@@ -4,28 +4,28 @@ import { obj } from '../helpers/interfaces';
 import './App.css';
 import Link from '../Link/Link';
 import Presets from '../Presets/Presets';
-import Settings from '../Settings/Settings';
-import CurrentSettingsContext from '../Context/CurrentSettingsContext';
-import SavedSettings from '../SavedSettings/SavedSettings';
+import MainContext from '../Context/MainContext';
+import SavedData from '../SavedData/SavedData';
 import GenerateLinks from '../GenerateLinks/GenerateLinks';
 import Links from '../Links/Links';
+import CurrentData from '../CurrentData/CurrentData';
 
 function App() {
-  const [settings, setSettings] = useLocalStorage("cf-settings", true, () => ({"search": {}}));
-  const [curSettings, setCurSettings] = useState<obj>({});
+  const [data, setData] = useLocalStorage("cl-data", true, () => ({"search": {}}));
+  const [curData, setCurData] = useState<obj>({});
 
   return (
-    <CurrentSettingsContext.Provider value={{settings, setSettings, curSettings, setCurSettings}}>
+    <MainContext.Provider value={{data, setData, curData, setCurData}}>
       <div className="App">
         <h1>Create Links</h1>
         <Link data-testid="link-component" />
         <Presets data-testid="presets-component" />
-        <SavedSettings data-testid="savedsettings-component" />
-        <Settings data-testid="settings-component" />
+        <SavedData data-testid="saveddata-component" />
+        <CurrentData data-testid="currentdata-component" />
         <Links data-testid="links-component" />
         <GenerateLinks data-testid="generatelinks-component" />
       </div>
-    </CurrentSettingsContext.Provider>
+    </MainContext.Provider>
   );
 }
 

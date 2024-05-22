@@ -17,10 +17,10 @@ describe('App', () => {
     expect(screen.getByTestId('presets-component')).toBeInTheDocument();
 
     // Check if the SavedSettings component is in the document
-    expect(screen.getByTestId('savedsettings-component')).toBeInTheDocument();
+    expect(screen.getByTestId('saveddata-component')).toBeInTheDocument();
 
     // Check if the Settings component is in the document
-    expect(screen.getByTestId('settings-component')).toBeInTheDocument();
+    expect(screen.getByTestId('currentdata-component')).toBeInTheDocument();
 
     // Check if the GenerateLinks component is in the document
     expect(screen.getByTestId('generatelinks-component')).toBeInTheDocument();

@@ -5,11 +5,11 @@ import Preset from "../Preset/Preset";
 import './Presets.css';
 
 function Presets({...props}){
-    const [presets, setPresets] = useLocalStorage("cf-presets", true, () => ({"web-dev": {}}));
+    const [presets, setPresets] = useLocalStorage("cl-presets", true, () => ({"web-dev": {}}));
     return (
         <div id="presets" {...props}>
             <h3>Presets</h3>
-            {Object.keys(presets).map((p) => <Preset name={p} preset={presets[p]}/>)}
+            {Object.keys(presets).map((p) => <Preset key={p} name={p} preset={presets[p]}/>)}
         </div>
     );
 }
