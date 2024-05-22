@@ -17,6 +17,7 @@
     justify-content: space-between;
     cursor: default;
     color: #242424;
+    margin-left: 5px;
 }
 
 .eb-header span {
@@ -30,7 +31,7 @@
     color: #1a1a1a;
 }
 
-.eb-list div:not(.setting-item){
+.eb-list div:not(.data-item), .eb-extension div:not(.data-item){
     max-width: 300px;
     width: 100px;
     min-width: fit-content;
@@ -38,6 +39,11 @@
 
 .eb-list input {
     width: 100px;
+}
+
+.eb-extension {
+    margin: 10px 5px 3px 5px;
+    float: left;
 }
 
 .ExpandableBox p {

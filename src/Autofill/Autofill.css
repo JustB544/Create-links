@@ -1,0 +1,8 @@
+.Autofill.invalid, .Autofill.invalid:focus, .Autofill.invalid:focus-visible {
+    border: 1px solid gray;
+    opacity: .5;
+}
+
+.Autofill.invalid:focus, .Autofill.invalid:focus-visible {
+    outline: none;
+}
