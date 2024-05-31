@@ -37,11 +37,11 @@ function SavedData({...props}){
             <hr/>
             {(nickname) ? 
                 <button className="eb-extension" onClick={() => setNickname(false)}>Back</button> : 
-            <>
+            <div className="eb-extension">
                 <button className="eb-extension" onClick={newData}>New</button>
                 <button className="eb-extension" onClick={clearData}>Clear</button>
                 <button className="eb-extension" onClick={nicknameData}>Nickname</button>
-            </>}
+            </div>}
         </ExpandableBox>
     );
 }
