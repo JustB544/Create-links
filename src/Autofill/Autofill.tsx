@@ -4,17 +4,17 @@ import { obj } from "../helpers/interfaces";
 import "./Autofill.css";
 
 function Autofill({...props}){
-    const {data, setData, curData, setCurData, baseLink, setBaseLink} = useContext<obj>(MainContext);
+    const {setData, setCurData, fullLink, setPriority} = useContext<obj>(MainContext);
     const [buttonState, setButtonState] = useState<string>("invalid");
 
     useEffect(() => {
-        if (baseLink !== "" && isUrl(baseLink) && baseLink.includes("/?")){
+        if (fullLink !== "" && isUrl(fullLink) && fullLink.includes("/?")){
             setButtonState("valid");
         }
         else {
             setButtonState("invalid");
         }
-    }, [baseLink]);
+    }, [fullLink]);
 
     function isUrl(s : string) : boolean{
         try {
@@ -30,17 +30,20 @@ function Autofill({...props}){
         if (buttonState !== "valid"){
             return;
         }
-        let url = new URL(baseLink);
-        let search = url.search;
-        let params = new URLSearchParams(search);
-        let _data : obj = {};
-        let _curdata : obj = {};
+        // let url = new URL(fullLink);
+        // let search = url.search;
+        // let params = new URLSearchParams(search);
+        const params = new URLSearchParams(new URL(fullLink).search);
+        const _data : obj = {};
+        const _curdata : obj = {};
         params.forEach((v : string, k : string) => {
-            _data[k] = "";
-            _curdata[k] = v;
+            _data[k] = {nickname: ""};
+            _curdata[k] = {value: v, nickname: ""};
         });
-        setData(_data);
+        setData((d : obj) => ({...d, ..._data}));
         setCurData(_curdata);
+        setPriority("data");
+        setPriority("curData");
     }
     return (
         <button className={"Autofill " + buttonState} {...props} onClick={autofill}>Autofill</button>

@@ -88,6 +88,14 @@ textarea:focus-visible,
   float: right;
 }
 
+.max-w {
+  width: 100% !important;
+}
+
+.max-h {
+  height: 100% !important;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

@@ -1,0 +1,39 @@
+.Link {
+    overflow-x: auto;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.link-item {
+    margin: 3px 5px;
+    text-align: center;
+    overflow-x: auto;
+    max-width: 150px;
+    user-select: none;
+    transition: border-color 0.25s, background-color 0.25s !important;
+}
+
+.link-item:hover {
+    background-color: #3a3a3a;
+    transition: background-color 0.25s;
+}
+
+.link-name {
+    max-width: 65px !important;
+    overflow-wrap: break-word;
+}
+
+.link-button {
+    background-color: #2a2a31 !important;
+    transition: background-color 0.25s;
+    padding: 0.6em 1.2em;
+}
+
+.link-button:hover {
+    background-color: #3a3a41 !important;
+    transition: background-color 0.25s;
+}
+
+.link-input {
+    width: 80px !important;
+}

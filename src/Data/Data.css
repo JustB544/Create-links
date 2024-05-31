@@ -4,4 +4,20 @@
     overflow-x: auto;
     max-width: 150px;
     user-select: none;
+    transition: background-color 0.5s;
+}
+
+.data-item:hover {
+    background-color: #2a2a2a;
+    transition: background-color 0.5s;
+}
+
+.data-button {
+    background-color: #2a2a31 !important;
+    transition: background-color 0.25s;
+}
+
+.data-button:hover {
+    background-color: #3a3a41 !important;
+    transition: background-color 0.25s;
 }

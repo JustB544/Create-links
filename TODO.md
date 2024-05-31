@@ -8,5 +8,4 @@
 
 ## Must be done
 - Make it so that presets can be added
-- Allow you to save links
 - Allow you to generate links

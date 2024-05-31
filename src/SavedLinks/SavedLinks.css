@@ -1,3 +1,14 @@
 /* .SavedLinks {
     
 } */
+
+.inactive, .inactive:focus, .inactive:focus-visible {
+    border: 1px solid gray !important;
+    opacity: .5;
+    color: #787878;
+    outline: none;
+}
+
+.inactive:focus, .inactive:focus-visible {
+    outline: none;
+}

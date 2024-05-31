@@ -4,14 +4,34 @@ import MainContext from "../Context/MainContext";
 import './BaseLink.css';
 
 function BaseLink({...props}){
-    const [value, setValue] = useState<string>("");
     const [rows, setRows] = useState<number>(2);
-    const {baseLink, setBaseLink} = useContext<obj>(MainContext);
+    const {baseLink, setBaseLink, fullLink, setFullLink} = useContext<obj>(MainContext);
+
+    useEffect(() => {
+        try {
+            const url = new URL(fullLink);
+            setBaseLink(url.host + url.pathname);
+        }
+        catch {
+            setBaseLink("");
+        }
+        const target : HTMLElement = document.querySelector(".BaseLink") as HTMLElement;
+        target.style.height = target.style.minHeight = 'auto';
+        target.style.minHeight = `${ Math.min(target.scrollHeight, parseInt(target.style.maxHeight)) }px`;
+        target.style.height = `${ Math.max(target.scrollHeight, 20) }px`;
+    }, [fullLink]);
 
     function setTextAreaInput(e : any) {
         const val : string = e.target.value;
         const target : HTMLElement = e.target;
-        setBaseLink(val);
+        try {
+            const url = new URL(val);
+            setBaseLink(url.host + url.pathname);
+        }
+        catch {
+            setBaseLink("");
+        }
+        setFullLink(val);
 
         target.style.height = target.style.minHeight = 'auto';
         target.style.minHeight = `${ Math.min(target.scrollHeight, parseInt(target.style.maxHeight)) }px`;
@@ -19,7 +39,7 @@ function BaseLink({...props}){
     }
 
     return (
-        <textarea cols={20} onChange={(e) => {setTextAreaInput(e)}} className="Link" placeholder="Base link" value={baseLink} {...props}/>
+        <textarea cols={20} onChange={(e) => {setTextAreaInput(e)}} className="BaseLink" placeholder="Base link" value={fullLink} {...props}/>
     );
 }
 
