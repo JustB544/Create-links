@@ -9,7 +9,7 @@ function Autofill({...props}){
     const [buttonState, setButtonState] = useState<string>("invalid");
 
     useEffect(() => {
-        if (fullLink !== "" && isUrl(fullLink) && fullLink.includes("/?")){
+        if (fullLink !== "" && isUrl(fullLink) && fullLink.includes("?")){
             setButtonState("valid");
         }
         else {
