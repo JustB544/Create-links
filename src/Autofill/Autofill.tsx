@@ -2,9 +2,10 @@ import React, {useContext, useEffect, useState} from "react";
 import MainContext from "../Context/MainContext";
 import { obj } from "../helpers/interfaces";
 import "./Autofill.css";
+import { addPriority } from "../helpers/functions";
 
 function Autofill({...props}){
-    const {setData, setCurData, fullLink, setPriority} = useContext<obj>(MainContext);
+    const {data, setData, curData, setCurData, fullLink, setPriority} = useContext<obj>(MainContext);
     const [buttonState, setButtonState] = useState<string>("invalid");
 
     useEffect(() => {
@@ -30,9 +31,6 @@ function Autofill({...props}){
         if (buttonState !== "valid"){
             return;
         }
-        // let url = new URL(fullLink);
-        // let search = url.search;
-        // let params = new URLSearchParams(search);
         const params = new URLSearchParams(new URL(fullLink).search);
         const _data : obj = {};
         const _curdata : obj = {};
@@ -40,10 +38,8 @@ function Autofill({...props}){
             _data[k] = {nickname: ""};
             _curdata[k] = {value: v, nickname: ""};
         });
-        setData((d : obj) => ({...d, ..._data}));
-        setCurData(_curdata);
-        setPriority("data");
-        setPriority("curData");
+        setData((d : obj) => addPriority({...d, ..._data}));
+        setCurData(addPriority(_curdata));
     }
     return (
         <button className={"Autofill " + buttonState} {...props} onClick={autofill}>Autofill</button>
