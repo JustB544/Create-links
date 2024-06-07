@@ -1,4 +1,4 @@
-import { sortPriority, addPriority } from "./functions";
+import { sortPriority, addPriority, asNew } from "./functions";
 
 describe('#sortPriority', () => {
     it('should return an array of keys arranged by priority', () => {
@@ -99,5 +99,38 @@ describe('#addPriority', () => {
             key4: { value: "value4", priority: 4 },
             key5: { value: "value5", priority: 5 },
         });
+    });
+});
+
+describe('#asNew', () => {
+    it('should return a new object with the same properties', () => {
+        const data = {
+            key1: { value: "value1" },
+            key2: { value: "value2" },
+            key3: { value: "value3" },
+        };
+
+        const result = asNew(data);
+
+        expect(result).toEqual(data);
+        expect(result).not.toBe(data);
+    });
+
+    it('should return a new array with the same properties', () => {
+        const data = [1, 2, 3];
+
+        const result = asNew(data);
+
+        expect(result).toEqual(data);
+        expect(result).not.toBe(data);
+    });
+
+    it('should return the same value if it is not an object or an array', () => {
+        const data = "string";
+
+        const result = asNew(data);
+
+        expect(result).toEqual(data);
+        expect(result).toBe(data);
     });
 });

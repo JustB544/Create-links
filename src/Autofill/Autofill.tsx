@@ -2,9 +2,13 @@ import React, {useContext, useEffect, useState} from "react";
 import MainContext from "../Context/MainContext";
 import { obj } from "../helpers/interfaces";
 import "./Autofill.css";
-import { addPriority } from "../helpers/functions";
 
-function Autofill({...props}){
+interface AutofillProps {
+    restrict: boolean;
+    [propName: string]: any;
+}
+
+function Autofill({restrict, ...props} : AutofillProps){
     const {data, setData, curData, setCurData, fullLink, setPriority} = useContext<obj>(MainContext);
     const [buttonState, setButtonState] = useState<string>("invalid");
 
@@ -35,11 +39,14 @@ function Autofill({...props}){
         const _data : obj = {};
         const _curdata : obj = {};
         params.forEach((v : string, k : string) => {
+            if (restrict && !data[k]) return;
             _data[k] = {nickname: ""};
-            _curdata[k] = {value: v, nickname: ""};
+            _curdata[k] = {value: v, nickname: (data[k]) ? data[k].nickname : ""};
         });
-        setData((d : obj) => addPriority({...d, ..._data}));
-        setCurData(addPriority(_curdata));
+        setData((d : obj) => ({..._data, ...d}));
+        setCurData(_curdata);
+        setPriority("data");
+        setPriority("curData");
     }
     return (
         <button className={"Autofill " + buttonState} {...props} onClick={autofill}>Autofill</button>

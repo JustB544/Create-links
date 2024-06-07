@@ -17,4 +17,11 @@ function addPriority(data : obj) : obj {
     }, {});
 }
 
-export { sortPriority, addPriority};
+/** Returns data without references to the original data. */
+function asNew<T>(data : T){
+    if (Array.isArray(data)) return [...data];
+    else if (typeof(data) === "object") return {...data};
+    return data;
+}
+
+export { sortPriority, addPriority, asNew};

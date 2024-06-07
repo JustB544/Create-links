@@ -2,6 +2,7 @@ import React, {useState, useContext} from "react";
 import MainContext from "../Context/MainContext";
 import { obj } from "../helpers/interfaces";
 import "./Link.css";
+import { addPriority } from "../helpers/functions";
 
 interface LinkProps {
     name: string;
@@ -9,7 +10,7 @@ interface LinkProps {
 }
 
 function Link({name, ...props} : LinkProps){
-    const {presets, setPresets, savedLinks, setSavedLinks, setPriority} = useContext<obj>(MainContext);
+    const {presets, setPresets, savedLinks, setSavedLinks, setPriority, setData, curData, setCurData, fullLink, baseLink} = useContext<obj>(MainContext);
 
     const [mode, setMode] = useState("list");
     const [value, setValue] = useState("");
@@ -20,12 +21,16 @@ function Link({name, ...props} : LinkProps){
     }
 
     function useLink(){
-        //TODO: Implement useLink
+        const params : obj = {};
+        Object.keys(curData).forEach(k => params[k] = {nickname: curData[k].nickname});
+        setData((d : any) => ({...d, ...params}));
+        setCurData((cd : any) => ({...cd, ...savedLinks[name].params}));
+        setPriority("data");
+        setPriority("curData");
     }
 
     function copyLink(){
         navigator.clipboard.writeText(savedLinks[name].link);
-        (document.querySelector("#link-"+name+" input.link-item") as any).focus();
     }
 
     function changeValue(e : any){
@@ -61,8 +66,11 @@ function Link({name, ...props} : LinkProps){
         window.open(savedLinks[name].link, "_blank");
     }
 
-    function updateLink(){
-        //TODO: Implement updateLink
+    function updateLink(e : any){
+        const params : obj = {};
+        Object.keys(curData).forEach(k => params[k] = curData[k].value);
+        setSavedLinks((s : obj) => ({...s, [name]: {link: new URL(fullLink).protocol + "//" + baseLink + "?" + new URLSearchParams(params).toString(), params: {...curData}}}));
+        setPriority("savedLinks");
     }
 
     function saveLink(){
@@ -82,7 +90,7 @@ function Link({name, ...props} : LinkProps){
                 </div>
                 <div className="col" style={{width: "20px"}}>
                     <button className="link-item link-button" onClick={useLink}>Use</button>
-                    <button className="link-item link-button" onClick={openLink}>Open</button>
+                    <button className="link-item link-button" onMouseDown={openLink}>Open</button>
                 </div>
                 <div className="col" style={{width: "min-content"}}>
                     <button className="link-item link-button" onMouseDown={copyLink}>Copy</button>

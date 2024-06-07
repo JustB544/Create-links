@@ -1,3 +1,4 @@
-/* .LinkActions {
-    
-} */
+.LinkActions {
+    display: flex;
+    justify-content: space-evenly;
+}

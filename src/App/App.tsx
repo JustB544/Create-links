@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import { useLocalStorage } from '../helpers/hooks';
+import { useBatch, useLocalStorage } from '../helpers/hooks';
 import { obj } from '../helpers/interfaces';
 import { addPriority } from '../helpers/functions';
 import './App.css';
@@ -13,19 +13,20 @@ import SavedLinks from '../SavedLinks/SavedLinks';
 import LinkActions from '../LinkActions/LinkActions';
 
 function App() {
-  const [data, setData] = useLocalStorage("cl-data", true, () => ({}));
-  const [presets, setPresets] = useLocalStorage("cl-presets", true, () => ({}));
-  const [curData, setCurData] = useState<obj>({});
-  const [savedLinks, setSavedLinks] = useState<obj>({});
+  const [data, _setData] = useLocalStorage("cl-data", true, () => ({}));
+  const setData = useBatch(data, _setData);
+
+  const [presets, _setPresets] = useLocalStorage("cl-presets", true, () => ({}));
+  const setPresets = useBatch(presets, _setPresets);
+
+  const [curData, _setCurData] = useState<obj>({});
+  const setCurData = useBatch(curData, _setCurData);
+
+  const [savedLinks, _setSavedLinks] = useState<obj>({});
+  const setSavedLinks = useBatch(savedLinks, _setSavedLinks);
+  
   const [baseLink, setBaseLink] = useState("");
   const [fullLink, setFullLink] = useState("");
-
-  // useEffect(() => {
-  //   // Manages the priorities of data, curData, and savedLinks
-  //   setData((d : obj) => addPriority(d));
-  //   setCurData((cd : obj) => addPriority(cd));
-  //   setSavedLinks((l : obj) => addPriority(l));
-  // }, [data, curData, savedLinks]);
 
   function setPriority(name : string){
     if (name === "data"){

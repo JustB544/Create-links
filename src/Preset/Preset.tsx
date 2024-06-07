@@ -13,7 +13,7 @@ function Preset({name, preset, ...props} : PresetProps){
 
     function usePreset(){
         setFullLink(preset.link);
-        setCurData((cd : obj ) => ({...cd, ...preset.params}));
+        setCurData((cd : obj ) => ({...preset.params, ...cd}));
         setData((d : obj) => {
             const params : obj = {};
             Object.keys(d).forEach(k => params[k] = {nickname: d[k].nickname});
