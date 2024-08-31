@@ -42,7 +42,7 @@ function Data({name, mode, ...props} : DataProps){
     }
 
     function changeNickname() : void{
-        setData((s : obj) => ({...s, [name]: {nickname: value, priority: s[name].priority}}));
+        setData((s : obj) => ({...s, [name]: {nickname: value, priority: s[name].priority, value: s[name].value}}));
         setPriority(setData);
 
     }
