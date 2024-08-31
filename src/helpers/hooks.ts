@@ -72,23 +72,4 @@ function useBatch<T>(state : T, setState : Function) : Function {
     return set;
 }
 
-/** Hook that allows for communication between components */
-function useChannel(identity : string) : Function {
-    const eventBus = {
-        on(event : string, callback : Function) : void {
-          document.addEventListener(event, () => callback());
-        },
-        dispatch(event : string, receiver : string) : void {
-          document.dispatchEvent(new CustomEvent(event, {detail: receiver}));
-        },
-        remove(event : any, callback : any) : void {
-          document.removeEventListener(event, callback);
-        },
-      };
-    useEffect(() => {
-
-    }, []);
-    return 1 as any;
-}
-
 export { useLocalStorage, useBatch }; 

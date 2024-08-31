@@ -3,6 +3,7 @@ import ExpandableBox from "../ExpandableBox/ExpandableBox";
 import MainContext from "../Context/MainContext";
 import { obj } from "../helpers/interfaces";
 import { sortPriority, setPriority } from "../helpers/functions";
+import { useSub } from "../helpers/pubsub";
 import './SavedLinks.css';
 import Link from "../Link/Link";
 
@@ -17,8 +18,12 @@ function SavedLinks({...props}){
         setSavedLinks((s : obj) => ({...s, "?": {link: new URL(fullLink).protocol + "//" + baseLink + "?" + new URLSearchParams(params).toString(), params: {...curData}}}));
         setPriority(setSavedLinks);
     }
+
+    useSub("usepreset", () => {
+        setHidden(false);
+    });
     return (
-        <ExpandableBox name="Saved Links" emptyText="No links saved yet" isEmpty={Object.keys(savedLinks).length === 0} isHidden={hidden} hide={(h: boolean) => setHidden(h)} {...props}>
+        <ExpandableBox name="Saved Links" emptyText="No links saved yet" isEmpty={Object.keys(savedLinks).length === 0} isHidden={hidden} hide={setHidden} {...props}>
             {sortPriority(savedLinks).map(s => <div key={s} className="max-w"><hr/><Link name={s} /></div>)}
             <hr/>
             <button className={`eb-extension${(baseLink) ? "" : " inactive"}`} onClick={() => {if (baseLink) addLink()}}>Add</button>

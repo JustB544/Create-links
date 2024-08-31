@@ -32,7 +32,7 @@ function SavedData({...props}){
         setData({});
     }
     return (
-        <ExpandableBox name="Data" emptyText="No data currently" isEmpty={Object.keys(data).length === 0} isHidden={hidden} hide={(h: boolean) => setHidden(h)} {...props}>
+        <ExpandableBox name="Data" emptyText="No data currently" isEmpty={Object.keys(data).length === 0} isHidden={hidden} hide={setHidden} {...props}>
             {sortPriority(data).map(s => <div key={s} className="max-w"><hr/><Data name={s} mode={(nickname) ? "nickname" : (s !== "?") ? "list" : "new"}/></div>)}
             <hr/>
             {(nickname) ? 

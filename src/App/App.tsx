@@ -19,8 +19,6 @@ function App() {
   const [presets, _setPresets] = useLocalStorage("cl-presets", true, () => ({}));
   const setPresets = useBatch(presets, _setPresets);
 
-  // const [curData, _setCurData] = useState<obj>({});
-  // const setCurData = useBatch(curData, _setCurData);
   const curData = useMemo(() => reduceData(data), [data]);
 
   const [savedLinks, _setSavedLinks] = useState<obj>({});

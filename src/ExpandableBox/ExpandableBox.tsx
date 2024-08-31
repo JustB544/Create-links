@@ -34,7 +34,7 @@ function ExpandableBox({children, name, emptyText, isEmpty, isHidden = true, hid
                     return (!(child.props.className && child.props.className.split(" ").includes("eb-extension"))) ? child : <></>;
                 })}
             </div>
-            <div className="eb-extention">
+            <div className="eb-list-extension">
                 {Children.map(children, (child : ReactElement) => {
                     return ((child.props.className && child.props.className.split(" ").includes("eb-extension"))) ? child : <></>;
                 })}
