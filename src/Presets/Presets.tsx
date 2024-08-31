@@ -6,7 +6,7 @@ import './Presets.css';
 import MainContext from "../Context/MainContext";
 
 function Presets({...props}){
-    const {presets, setPresets} = useContext<obj>(MainContext)
+    const {presets: [presets, setPresets]} = useContext<obj>(MainContext)
     return (
         <div id="presets" {...props}>
             <h3>Presets</h3>

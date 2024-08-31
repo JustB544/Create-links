@@ -17,6 +17,11 @@ function addPriority(data : obj) : obj {
     }, {});
 }
 
+/** Takes a function used to update state and adds priority */
+function setPriority(func : Function){
+    func((d : obj) => addPriority(d));
+}
+
 /** Returns data without references to the original data. */
 function asNew<T>(data : T){
     if (Array.isArray(data)) return [...data];
@@ -24,4 +29,12 @@ function asNew<T>(data : T){
     return data;
 }
 
-export { sortPriority, addPriority, asNew};
+/** Returns data that has a value key */
+function reduceData(data : obj) : obj{
+    return Object.keys(data).reduce((acc : any, key) => {
+        if (data[key].value || data[key].value === "") acc[key] = data[key];
+        return acc;
+    }, {});
+}
+
+export { sortPriority, addPriority, setPriority, asNew, reduceData };

@@ -5,7 +5,7 @@ import './BaseLink.css';
 
 function BaseLink({...props}){
     const [rows, setRows] = useState<number>(2);
-    const {baseLink, setBaseLink, fullLink, setFullLink} = useContext<obj>(MainContext);
+    const {link: {baseLink: [baseLink, setBaseLink], fullLink: [fullLink, setFullLink]}} = useContext<obj>(MainContext);
 
     useEffect(() => {
         try {

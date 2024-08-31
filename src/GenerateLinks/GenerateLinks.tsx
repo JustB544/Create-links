@@ -5,7 +5,7 @@ import MainContext from "../Context/MainContext";
 import { sortPriority } from "../helpers/functions";
 
 function GenerateLinks({...props}){
-    const {savedLinks} = useContext<obj>(MainContext);
+    const {savedLinks: [savedLinks]} = useContext<obj>(MainContext);
 
     function generate(){
         sortPriority(savedLinks).forEach((sl : string) => window.open(savedLinks[sl].link, "_blank"));

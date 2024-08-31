@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { obj } from "../helpers/interfaces";
+import { setPriority } from "../helpers/functions";
 import MainContext from "../Context/MainContext";
 
 interface PresetProps {
@@ -9,20 +10,14 @@ interface PresetProps {
 }
 
 function Preset({name, preset, ...props} : PresetProps){
-    const {setCurData, setData, setSavedLinks, setFullLink, setPriority} = useContext<obj>(MainContext);
+    const {data: [data, setData], curData, savedLinks: [,setSavedLinks], link: {fullLink: [,setFullLink]}} = useContext<obj>(MainContext);
 
     function usePreset(){
         setFullLink(preset.link);
-        setCurData((cd : obj ) => ({...preset.params, ...cd}));
-        setData((d : obj) => {
-            const params : obj = {};
-            Object.keys(d).forEach(k => params[k] = {nickname: d[k].nickname});
-            return {...d, params};
-        });
+        setData((d : obj ) => ({...preset.params, ...d}));
         setSavedLinks((sl : obj) => ({...sl, [name]: {link: preset.link, params: preset.params}}));
-        setPriority("data");
-        setPriority("curData");
-        setPriority("savedLinks");
+        setPriority(setData);
+        setPriority(setSavedLinks);
     }
 
     return (

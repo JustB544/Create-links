@@ -2,20 +2,20 @@ import React, {useContext, useEffect, useState} from "react";
 import ExpandableBox from "../ExpandableBox/ExpandableBox";
 import MainContext from "../Context/MainContext";
 import { obj } from "../helpers/interfaces";
-import { sortPriority } from "../helpers/functions";
+import { sortPriority, setPriority } from "../helpers/functions";
 import './SavedLinks.css';
 import Link from "../Link/Link";
 
 function SavedLinks({...props}){
     const [hidden, setHidden] = useState(true);
-    const {baseLink, fullLink, savedLinks, setSavedLinks, curData, setPriority} = useContext<obj>(MainContext);
+    const {link: {baseLink: [baseLink], fullLink: [fullLink]}, curData, savedLinks: [savedLinks, setSavedLinks]} = useContext<obj>(MainContext);
 
     function addLink(){
         setHidden(false);
         const params : obj = {};
         Object.keys(curData).forEach(k => params[k] = curData[k].value);
         setSavedLinks((s : obj) => ({...s, "?": {link: new URL(fullLink).protocol + "//" + baseLink + "?" + new URLSearchParams(params).toString(), params: {...curData}}}));
-        setPriority("savedLinks");
+        setPriority(setSavedLinks);
     }
     return (
         <ExpandableBox name="Saved Links" emptyText="No links saved yet" isEmpty={Object.keys(savedLinks).length === 0} isHidden={hidden} hide={(h: boolean) => setHidden(h)} {...props}>

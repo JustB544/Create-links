@@ -1,12 +1,12 @@
-import React, {useContext, useEffect, useState, useReducer} from "react";
+import React, {useContext, useState} from "react";
 import Data from "../Data/Data";
 import ExpandableBox from "../ExpandableBox/ExpandableBox";
 import { obj } from "../helpers/interfaces";
 import MainContext from "../Context/MainContext";
-import { sortPriority } from "../helpers/functions";
+import { sortPriority, setPriority } from "../helpers/functions";
 
 function SavedData({...props}){
-    const {data, setData, setPriority} = useContext<obj>(MainContext);
+    const {data: [data, setData]} = useContext<obj>(MainContext);
     const [hidden, setHidden] = useState<boolean>(true);
     const [nickname, setNickname] = useState<boolean>(false);
     // const [, forceUpdate] = useReducer(x => x + 1, 0);
@@ -19,7 +19,7 @@ function SavedData({...props}){
     function newData(){
         setHidden(false);
         setData((s : obj) => ({...s, "?": {nickname: ""}}));
-        setPriority("data");
+        setPriority(setData);
     }
 
     function nicknameData(){

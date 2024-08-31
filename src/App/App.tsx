@@ -1,7 +1,7 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useMemo } from 'react';
 import { useBatch, useLocalStorage } from '../helpers/hooks';
 import { obj } from '../helpers/interfaces';
-import { addPriority } from '../helpers/functions';
+import { addPriority, reduceData } from '../helpers/functions';
 import './App.css';
 import BaseLink from '../BaseLink/BaseLink';
 import Presets from '../Presets/Presets';
@@ -19,8 +19,9 @@ function App() {
   const [presets, _setPresets] = useLocalStorage("cl-presets", true, () => ({}));
   const setPresets = useBatch(presets, _setPresets);
 
-  const [curData, _setCurData] = useState<obj>({});
-  const setCurData = useBatch(curData, _setCurData);
+  // const [curData, _setCurData] = useState<obj>({});
+  // const setCurData = useBatch(curData, _setCurData);
+  const curData = useMemo(() => reduceData(data), [data]);
 
   const [savedLinks, _setSavedLinks] = useState<obj>({});
   const setSavedLinks = useBatch(savedLinks, _setSavedLinks);
@@ -28,40 +29,13 @@ function App() {
   const [baseLink, setBaseLink] = useState("");
   const [fullLink, setFullLink] = useState("");
 
-  function setPriority(name : string){
-    if (name === "data"){
-      setData((d : obj) => addPriority(d));
-    }
-    else if (name === "curData"){
-      setCurData((cd : obj) => addPriority(cd));
-    }
-    else if (name === "savedLinks"){
-      setSavedLinks((l : obj) => addPriority(l));
-    }
-    else if (name === "presets"){
-      setPresets((p : obj) => addPriority(p));
-    }
-    else {
-      console.error("Unknown object referenced");
-    }
-  }
-
-
   return (
     <MainContext.Provider value={{
-      data, 
-      setData, 
-      presets,
-      setPresets,
-      curData, 
-      setCurData, 
-      baseLink, 
-      setBaseLink, 
-      fullLink, 
-      setFullLink, 
-      savedLinks, 
-      setSavedLinks,
-      setPriority
+      data: [data, setData],
+      curData,
+      presets: [presets, setPresets],
+      link: {baseLink: [baseLink, setBaseLink], fullLink: [fullLink, setFullLink]},
+      savedLinks: [savedLinks, setSavedLinks]
       }}>
       <div className="App">
         <h1>Create Links</h1>

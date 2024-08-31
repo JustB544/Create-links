@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {Component, createContext, useContext, useEffect, useState} from "react";
 import { obj } from "./interfaces";
 import {v4 as uuid} from "uuid";
 import { asNew } from "./functions";
@@ -41,31 +41,25 @@ function useBatch<T>(state : T, setState : Function) : Function {
 
     type Function<T> = (...any : any) => T;
 
-    // batch stores all of the functions that are to be executed (a stack could be used, but Object.keys gives keys in the order they are added acting as a stack)
+    // batch stores all of the functions that are to be executed (a queue could be used, but Object.keys gives keys in the order they are added acting as a queue)
     const [batch, setBatch] = useState<obj>({});
-
-    // Toggle is used to continue the batch after the state is updated
-    const [toggle, setToggle] = useState<boolean>(false);
 
     // Mock is used so that the state is not updated until the batch is empty
     const [mock, setMock] = useState<T>(state);
 
-    useEffect(() => {
-        // failsafe to ensure that the batch is not empty
-        if (Object.keys(batch).length > 0){
-            const cur : string = Object.keys(batch)[0];
-            setMock(batch[cur] as Function<T>);
-            setBatch((b : any) => {
-                const _b = {...b};
-                delete _b[cur];
-                return _b;
-            });
-        }
-    }, [toggle]);
+    function next(){
+        const cur : string = Object.keys(batch)[0];
+        setMock(batch[cur] as Function<T>);
+        setBatch((b : any) => {
+            const _b = {...b};
+            delete _b[cur];
+            return _b;
+        });
+    }
 
     useEffect(() => {
         // continues the batch or updates the state if at the end of the batch
-        if (Object.keys(batch).length > 0) setToggle(!toggle);
+        if (Object.keys(batch).length > 0) next();
         else setState(asNew(mock));
     }, [mock]);
 
@@ -76,6 +70,25 @@ function useBatch<T>(state : T, setState : Function) : Function {
     }
 
     return set;
+}
+
+/** Hook that allows for communication between components */
+function useChannel(identity : string) : Function {
+    const eventBus = {
+        on(event : string, callback : Function) : void {
+          document.addEventListener(event, () => callback());
+        },
+        dispatch(event : string, receiver : string) : void {
+          document.dispatchEvent(new CustomEvent(event, {detail: receiver}));
+        },
+        remove(event : any, callback : any) : void {
+          document.removeEventListener(event, callback);
+        },
+      };
+    useEffect(() => {
+
+    }, []);
+    return 1 as any;
 }
 
 export { useLocalStorage, useBatch }; 

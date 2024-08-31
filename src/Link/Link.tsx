@@ -1,8 +1,9 @@
 import React, {useState, useContext} from "react";
 import MainContext from "../Context/MainContext";
 import { obj } from "../helpers/interfaces";
+import { setPriority } from "../helpers/functions";
 import "./Link.css";
-import { addPriority } from "../helpers/functions";
+import { reduceData} from "../helpers/functions";
 
 interface LinkProps {
     name: string;
@@ -10,7 +11,7 @@ interface LinkProps {
 }
 
 function Link({name, ...props} : LinkProps){
-    const {presets, setPresets, savedLinks, setSavedLinks, setPriority, setData, curData, setCurData, fullLink, baseLink} = useContext<obj>(MainContext);
+    const {presets: [, setPresets], savedLinks: [savedLinks, setSavedLinks], data: [,setData], curData, link: {fullLink: [fullLink], baseLink: [baseLink]}} = useContext<obj>(MainContext);
 
     const [mode, setMode] = useState("list");
     const [value, setValue] = useState("");
@@ -24,9 +25,8 @@ function Link({name, ...props} : LinkProps){
         const params : obj = {};
         Object.keys(curData).forEach(k => params[k] = {nickname: curData[k].nickname});
         setData((d : any) => ({...d, ...params}));
-        setCurData((cd : any) => ({...cd, ...savedLinks[name].params}));
-        setPriority("data");
-        setPriority("curData");
+        setData((cd : any) => ({...cd, ...savedLinks[name].params}));
+        setPriority(setData);
     }
 
     function copyLink(){
@@ -43,7 +43,7 @@ function Link({name, ...props} : LinkProps){
             delete _s[name];
             return _s;
         });
-        setPriority("savedLinks");
+        setPriority(setSavedLinks);
     }
 
     function changeLink(){
@@ -54,7 +54,7 @@ function Link({name, ...props} : LinkProps){
                 delete _s[name];
                 return _s;
             });
-            setPriority("savedLinks");
+            setPriority(setSavedLinks);
         }
         else if (value !== name) {
             deleteLink();
@@ -70,12 +70,12 @@ function Link({name, ...props} : LinkProps){
         const params : obj = {};
         Object.keys(curData).forEach(k => params[k] = curData[k].value);
         setSavedLinks((s : obj) => ({...s, [name]: {link: new URL(fullLink).protocol + "//" + baseLink + "?" + new URLSearchParams(params).toString(), params: {...curData}}}));
-        setPriority("savedLinks");
+        setPriority(setSavedLinks);
     }
 
     function saveLink(){
         setPresets((p : obj) => ({...p, [name]: {link: savedLinks[name].link, params: savedLinks[name].params}}));
-        setPriority("presets");
+        setPriority(setPresets);
     }
     return (
         <div id={`link-${name}`} className="Link row" style={{width: "100%"}} {...props}>

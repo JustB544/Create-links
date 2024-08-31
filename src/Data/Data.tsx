@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import MainContext from "../Context/MainContext";
 import { obj } from "../helpers/interfaces";
+import { setPriority } from "../helpers/functions";
 import "./Data.css";
 
 interface DataProps {
@@ -11,18 +12,20 @@ interface DataProps {
 }
 
 function Data({name, mode, ...props} : DataProps){
-    const {data, setData, curData, setCurData, setPriority} = useContext<obj>(MainContext);
+    const {data: [data, setData]} = useContext<obj>(MainContext);
     const [_mode, setMode] = useState(mode);
     const [value, setValue] = useState("");
     const [displayName, setDisplayName] = useState(name);
 
     useEffect(() => {
+        if (Object.keys(data).length == 0) return;
         if (mode !== _mode){
             if (_mode === "nickname" && data[name].nickname !== value) changeNickname();
             setMode(mode);
         }
         if (mode === "nickname") setValue(data[name].nickname);
-        else if (curData[name]) setValue(curData[name].value);
+        // else if (curData[name]) setValue(curData[name].value);
+        else if (data[name] && data[name].value) setValue(data[name].value);
         if (data[name].nickname !== "") setDisplayName(data[name].nickname);
         else if (displayName !== name) setDisplayName(name);
     }, [mode, displayName, data[name]]);
@@ -30,7 +33,7 @@ function Data({name, mode, ...props} : DataProps){
     function addToData() : void{
         setData((d : obj) => ({...d, [value]: {nickname: ""}}));
         setValue("");
-        setPriority("data");
+        setPriority(setData);
     }
 
     function editData(){
@@ -40,11 +43,7 @@ function Data({name, mode, ...props} : DataProps){
 
     function changeNickname() : void{
         setData((s : obj) => ({...s, [name]: {nickname: value, priority: s[name].priority}}));
-        if (curData[name]) {
-            setCurData((s : obj) => ({...s, [name]: {value: s[name].value, nickname: value, priority: s[name].priority}}));
-        }
-        setPriority("data");
-        setPriority("curData");
+        setPriority(setData);
 
     }
 
@@ -56,14 +55,7 @@ function Data({name, mode, ...props} : DataProps){
                 _s[value] = s[name];
                 return _s;
             });
-            setCurData((s : obj) => {
-                let _s = {...s};
-                delete _s[name];
-                _s[value] = s[name];
-                return _s;
-            });
-            setPriority("data");
-            setPriority("curData");
+            setPriority(setData);
         }
         else if (value === "") {
             deleteData();
@@ -72,9 +64,9 @@ function Data({name, mode, ...props} : DataProps){
     }
 
     function deleteCurData() : void {
-        setCurData((s : obj) => {
+        setData((s : obj) => {
             let _s = {...s};
-            delete _s[name];
+            delete _s[name].value
             return _s;
         });
     }
@@ -85,26 +77,21 @@ function Data({name, mode, ...props} : DataProps){
 
     function changeCurData(e : any) : void {
         setValue(e.target.value);
-        setCurData((s : obj) => {
+        setData((s : obj) => {
             let _s = {...s};
             _s[name].value = e.target.value;
             return _s;
         });
-        setPriority("curData");
+        setPriority(setData);
     }
 
     function addCurData() : void {
-        setCurData((cd : obj) => ({...cd, [name]: {value: "", nickname: data[name].nickname}}));
-        setPriority("curData");
+        setData((cd : obj) => ({...cd, [name]: {value: "", ...data[name]}}));
+        setPriority(setData);
     }
 
     function deleteData() : void{
         setData((s : obj) => {
-            let _s = {...s};
-            delete _s[name];
-            return _s;
-        });
-        setCurData((s : obj) => {
             let _s = {...s};
             delete _s[name];
             return _s;

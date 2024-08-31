@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import MainContext from "../Context/MainContext";
 import { obj } from "../helpers/interfaces";
+import { setPriority } from "../helpers/functions";
 import "./Autofill.css";
 
 interface AutofillProps {
@@ -9,11 +10,11 @@ interface AutofillProps {
 }
 
 function Autofill({restrict, ...props} : AutofillProps){
-    const {data, setData, curData, setCurData, fullLink, setPriority} = useContext<obj>(MainContext);
+    const {data: [data, setData], link: {fullLink: [fullLink], baseLink: [baseLink]}} = useContext<obj>(MainContext);
     const [buttonState, setButtonState] = useState<string>("invalid");
 
     useEffect(() => {
-        if (fullLink !== "" && isUrl(fullLink) && fullLink.includes("?")){
+        if (baseLink !== "" && new URL(fullLink).search.length > 0){
             setButtonState("valid");
         }
         else {
@@ -36,17 +37,19 @@ function Autofill({restrict, ...props} : AutofillProps){
             return;
         }
         const params = new URLSearchParams(new URL(fullLink).search);
-        const _data : obj = {};
-        const _curdata : obj = {};
+        let _data : obj = {};
+        // if (data[baseLink]){
+        //     _data = {...data[baseLink]};
+        // }
+        // const _curData : obj = {};
         params.forEach((v : string, k : string) => {
-            if (restrict && !data[k]) return;
+            if (restrict && !data[k] && Object.keys(data).length != 0) return;
             _data[k] = {nickname: ""};
-            _curdata[k] = {value: v, nickname: (data[k]) ? data[k].nickname : ""};
+            if (v && (!data[k] || !data[k].value)) _data[k].value = v;
+            else if (data[k] && data[k].value) _data[k].value = data[k].value;
         });
-        setData((d : obj) => ({..._data, ...d}));
-        setCurData(_curdata);
-        setPriority("data");
-        setPriority("curData");
+        setData((d : obj) => ({...d, ..._data}));
+        setPriority(setData);
     }
     return (
         <button className={"Autofill " + buttonState} {...props} onClick={autofill}>Autofill</button>
