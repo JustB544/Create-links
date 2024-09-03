@@ -23,9 +23,15 @@ function setPriority(func : Function){
 }
 
 /** Returns data without references to the original data. */
-function asNew<T>(data : T){
-    if (Array.isArray(data)) return [...data];
-    else if (typeof(data) === "object") return {...data};
+function asNew<T>(data : T) : any{
+    if (Array.isArray(data)) {
+        return data.map((d : any) => asNew(d));
+    }
+    else if (typeof(data) === "object") {
+        const _data : obj = {};
+        Object.keys(data as obj).forEach(k => _data[k] = asNew((data as obj)[k]));
+        return _data;
+    }
     return data;
 }
 

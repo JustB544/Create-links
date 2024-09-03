@@ -1,9 +1,8 @@
 import React, {useState, useContext} from "react";
 import MainContext from "../Context/MainContext";
 import { obj } from "../helpers/interfaces";
-import { setPriority } from "../helpers/functions";
+import { addPriority, setPriority, asNew } from "../helpers/functions";
 import "./Link.css";
-import { reduceData} from "../helpers/functions";
 
 interface LinkProps {
     name: string;
@@ -69,7 +68,7 @@ function Link({name, ...props} : LinkProps){
     function updateLink(e : any){
         const params : obj = {};
         Object.keys(curData).forEach(k => params[k] = curData[k].value);
-        setSavedLinks((s : obj) => ({...s, [name]: {link: new URL(fullLink).protocol + "//" + baseLink + "?" + new URLSearchParams(params).toString(), params: {...curData}}}));
+        setSavedLinks((s : obj) => ({...s, [name]: {priority: savedLinks[name].priority ,link: new URL(fullLink).protocol + "//" + baseLink + "?" + new URLSearchParams(params).toString(), params: addPriority(asNew(curData))}}));
         setPriority(setSavedLinks);
     }
 

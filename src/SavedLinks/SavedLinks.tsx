@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import ExpandableBox from "../ExpandableBox/ExpandableBox";
 import MainContext from "../Context/MainContext";
 import { obj } from "../helpers/interfaces";
-import { sortPriority, setPriority } from "../helpers/functions";
+import { sortPriority, setPriority, asNew, addPriority } from "../helpers/functions";
 import { useSub } from "../helpers/pubsub";
 import './SavedLinks.css';
 import Link from "../Link/Link";
@@ -15,7 +15,7 @@ function SavedLinks({...props}){
         setHidden(false);
         const params : obj = {};
         Object.keys(curData).forEach(k => params[k] = curData[k].value);
-        setSavedLinks((s : obj) => ({...s, "?": {link: new URL(fullLink).protocol + "//" + baseLink + "?" + new URLSearchParams(params).toString(), params: {...curData}}}));
+        setSavedLinks((s : obj) => ({...s, "?": {link: new URL(fullLink).protocol + "//" + baseLink + "?" + new URLSearchParams(params).toString(), params: addPriority(asNew(curData))}}));
         setPriority(setSavedLinks);
     }
 
